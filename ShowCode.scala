@@ -10,10 +10,20 @@ object ShowCode extends App {
 
   lazy val toolbox: ToolBox[universe.type] = universe.runtimeMirror(getClass.getClassLoader).mkToolBox()
 
-  val code = "class CustomFunction extends Function2[scala.Int, scala.Int, Any] {\n  override def apply(x$1: Int, x$2: Int) = x$1.+(x$2)\n}"
+  val code = "List(1, 2).reduce(_ + _ )"
+  val oldCode = toolbox.untypecheck(toolbox.typecheck(toolbox.parse(code)))
+  val Apply(_, List(Function(params, body))) = oldCode
 
-  val parsed = toolbox.parse(code)
-  val reCode = universe.showCode(parsed)
+  val newClass = toolbox.parse(s"class Ala extends Function2[Int, Int, Any]{ override def apply(v1: Any) = ???}")
+
+  val ClassDef(mods, name, tparams, Template(parents, self, List(constructor, oldApplyFunction))) = newClass
+
+
+  val DefDef(functionMods, functionName, _, _, retType, _) = oldApplyFunction
+  val newApplyFunction = DefDef(functionMods, functionName, Nil, List(params), retType, body)
+  val newFunctionClass = ClassDef(mods, name, tparams, Template(parents, self, List(constructor, newApplyFunction)))
+
+  val reCode = universe.showCode(newFunctionClass)
   val reParsed = toolbox.parse(reCode)
   println(reCode)
 }
