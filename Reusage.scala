@@ -14,6 +14,11 @@ object Reusage extends App {
   val code2 = "val b = true; b < false"
 
 
+  val normal = toolbox.compile(toolbox.parse(code))
+  val normal2 = toolbox.compile(toolbox.parse(code2))
+
+  println(normal(), normal2())
+
   def livecyle(code: String) = {
     val tree = toolbox.parse(code)
     val typecheck = toolbox.typecheck(tree)
@@ -21,8 +26,8 @@ object Reusage extends App {
     toolbox.compile(untypecheck)
   }
 
-  val f = livecyle(code)
-  val f2 = livecyle(code)
+  val withUntypecheck = livecyle(code)
+  val withUntypecheck2 = livecyle(code)
 
-  println(f(), f2())
+  println(withUntypecheck(), withUntypecheck2())
 }
