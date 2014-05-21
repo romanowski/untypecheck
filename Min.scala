@@ -33,6 +33,12 @@ object Min extends App {
     args
   }
 
+
+  val code2 = "( (x: Int), (y: Int)) => x + y"
+  val typechecked2 = toolbox.typecheck(toolbox.parse(code2))
+  val reparsed = toolbox.parse(universe.showCode(typechecked2))
+
+
   //modification of AST
   val newTree = Function(functionArgs, newBody)
 
