@@ -1,8 +1,6 @@
 import libs.{Ala, Ala$scala$class}
 
-/**
- * Author: Krzysztof Romanowski
- */
+
 object ImportFromDollarNames extends TestCase {
 
   val test1 = {
@@ -10,7 +8,7 @@ object ImportFromDollarNames extends TestCase {
     import ala._
     a
   }
-
+//Eg. object A extennds App is compiled into classes: A, A4 and A$delayedInit$body
   val test2 = {
     val ala: libs.Ala$scala$class = new Ala$scala$class
     import ala._
