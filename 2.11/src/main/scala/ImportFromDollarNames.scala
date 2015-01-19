@@ -8,7 +8,7 @@ object ImportFromDollarNames extends TestCase {
   val test1 = {
     val ala: libs.Ala = new Ala
     import ala._
-    acd
+    a
   }
 
   val test2 = {
